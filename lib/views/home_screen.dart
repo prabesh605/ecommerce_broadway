@@ -1,6 +1,7 @@
-import 'package:ecommerce_app/counter_provider.dart';
-import 'package:ecommerce_app/first_screen.dart';
-import 'package:ecommerce_app/theme_provider.dart';
+import 'package:ecommerce_app/providers/counter_provider.dart';
+// import 'package:ecommerce_app/first_screen.dart';
+import 'package:ecommerce_app/providers/theme_provider.dart';
+import 'package:ecommerce_app/views/weather_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -54,21 +55,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            OutlinedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FirstScreen()),
-                );
-              },
-              child: Text("First Screen"),
-            ),
+            // OutlinedButton(
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => FirstScreen()),
+            //     );
+            //   },
+            //   child: Text("First Screen"),
+            // ),
             SizedBox(height: 60),
             OutlinedButton(
               onPressed: () {
                 provider.reset();
               },
               child: Text("Reset"),
+            ),
+            SizedBox(height: 100),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WeatherScreen()),
+                );
+              },
+              child: Text("Weather Screen"),
             ),
           ],
         ),
