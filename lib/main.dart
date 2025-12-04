@@ -8,13 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  WeatherService weatherService = WeatherService(
+    "0b10461d5a30e6612ce19d84c97ef651#",
+  );
+  WeatherController weatherController = WeatherController(weatherService);
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CounterProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(
-          create: (_) => WeatherProvider(WeatherController(WeatherService())),
+          create: (_) => WeatherProvider(weatherController),
         ),
       ],
       child: const MyApp(),

@@ -37,6 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
               '${provider.count}',
               style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
             ),
+            Consumer<CounterProvider>(
+              builder: (_, a, child) {
+                return Text("${provider.count}");
+              },
+            ),
+
+            Consumer<CounterProvider>(
+              builder: (_, a, child) {
+                return Text("Error here");
+              },
+            ),
             SizedBox(height: 100),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
