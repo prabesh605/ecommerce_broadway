@@ -15,52 +15,54 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<CounterProvider>(context);
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    // final provider = Provider.of<CounterProvider>(context);
+    // final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Provider"),
         actions: [
-          Switch(
-            value: themeProvider.isDark,
-            onChanged: (value) {
-              themeProvider.changeTheme();
-            },
-          ),
+          // Switch(
+          //   value: themeProvider.isDark,
+          //   onChanged: (value) {
+          //     themeProvider.changeTheme();
+          //   },
+          // ),
         ],
       ),
       body: Center(
         child: Column(
-          children: [
-            Text(themeProvider.isDark ? "Dark Mode" : "Light Mode"),
-            Text(
-              '${provider.count}',
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-            ),
-            Consumer<CounterProvider>(
-              builder: (_, a, child) {
-                return Text("${provider.count}");
-              },
-            ),
 
-            Consumer<CounterProvider>(
-              builder: (_, a, child) {
-                return Text("Error here");
-              },
-            ),
+          
+          children: [
+            // Text(themeProvider.isDark ? "Dark Mode" : "Light Mode"),
+            // Text(
+            //   '${provider.count}',
+            //   style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            // ),
+            // Consumer<CounterProvider>(
+            //   builder: (_, a, child) {
+            //     return Text("${provider.count}");
+            //   },
+            // ),
+
+            // Consumer<CounterProvider>(
+            //   builder: (_, a, child) {
+            //     return Text("Error here");
+            //   },
+            // ),
             SizedBox(height: 100),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
                   onPressed: () {
-                    provider.increament();
+                    // provider.increament();
                   },
                   icon: Icon(Icons.add, size: 40),
                 ),
                 IconButton(
                   onPressed: () {
-                    provider.decrement();
+                    // provider.decrement();
                   },
                   icon: Icon(Icons.remove, size: 40),
                 ),
@@ -78,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: 60),
             OutlinedButton(
               onPressed: () {
-                provider.reset();
+                // provider.reset();
               },
               child: Text("Reset"),
             ),

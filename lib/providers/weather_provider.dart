@@ -7,11 +7,14 @@ class WeatherProvider with ChangeNotifier {
   WeatherProvider(this.weatherController);
   double? temparature;
   String? name;
+  bool isLoading = false;
 
   Future<void> loadWeather(String cityName) async {
+    isLoading = true;
     final Weather weather = await weatherController.getWeather(cityName);
     temparature = weather.main.temp;
     name = weather.name;
+    isLoading = false;
     notifyListeners();
   }
 }

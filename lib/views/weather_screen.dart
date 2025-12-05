@@ -36,6 +36,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   ),
                 ),
               ),
+              provider.isLoading?CircularProgressIndicator():
               OutlinedButton(
                 onPressed: () async {
                   if (searchController.text.isNotEmpty) {
