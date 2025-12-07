@@ -1,6 +1,6 @@
-import 'package:ecommerce_app/bloc/counter_bloc.dart';
-import 'package:ecommerce_app/bloc/counter_event.dart';
-import 'package:ecommerce_app/bloc/counter_state.dart';
+import 'package:ecommerce_app/blocs/counter_bloc/counter_bloc.dart';
+import 'package:ecommerce_app/blocs/counter_bloc/counter_event.dart';
+import 'package:ecommerce_app/blocs/counter_bloc/counter_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

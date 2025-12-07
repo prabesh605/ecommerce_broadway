@@ -1,14 +1,16 @@
-import 'package:ecommerce_app/bloc/counter_bloc.dart';
+import 'package:ecommerce_app/blocs/counter_bloc/counter_bloc.dart';
+import 'package:ecommerce_app/blocs/todo/todo_bloc.dart';
 import 'package:ecommerce_app/controller/weather_controller.dart';
-import 'package:ecommerce_app/providers/counter_provider.dart';
-import 'package:ecommerce_app/providers/weather_provider.dart';
+// import 'package:ecommerce_app/providers/counter_provider.dart';
+// import 'package:ecommerce_app/providers/weather_provider.dart';
 import 'package:ecommerce_app/services/weather_service.dart';
 import 'package:ecommerce_app/views/counter_screen.dart';
-import 'package:ecommerce_app/views/home_screen.dart';
-import 'package:ecommerce_app/providers/theme_provider.dart';
+import 'package:ecommerce_app/views/todo_screen.dart';
+// import 'package:ecommerce_app/views/home_screen.dart';
+// import 'package:ecommerce_app/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 void main() {
   WeatherService weatherService = WeatherService(
@@ -17,7 +19,10 @@ void main() {
   WeatherController weatherController = WeatherController(weatherService);
   runApp(
     MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => CounterBloc())],
+      providers: [
+        BlocProvider(create: (_) => CounterBloc()),
+        BlocProvider(create: (_) => TodoBloc()),
+      ],
       child: const MyApp(),
     ),
 
@@ -47,7 +52,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(),
       title: 'Flutter Demo',
 
-      home: CounterScreen(),
+      home: TodoScreen(),
     );
   }
 }
