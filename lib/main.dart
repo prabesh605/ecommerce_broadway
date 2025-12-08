@@ -1,10 +1,12 @@
 import 'package:ecommerce_app/blocs/counter_bloc/counter_bloc.dart';
+import 'package:ecommerce_app/blocs/login/login_bloc.dart';
 import 'package:ecommerce_app/blocs/todo/todo_bloc.dart';
 import 'package:ecommerce_app/controller/weather_controller.dart';
 // import 'package:ecommerce_app/providers/counter_provider.dart';
 // import 'package:ecommerce_app/providers/weather_provider.dart';
 import 'package:ecommerce_app/services/weather_service.dart';
 import 'package:ecommerce_app/views/counter_screen.dart';
+import 'package:ecommerce_app/views/login_screen.dart';
 import 'package:ecommerce_app/views/todo_screen.dart';
 // import 'package:ecommerce_app/views/home_screen.dart';
 // import 'package:ecommerce_app/providers/theme_provider.dart';
@@ -22,6 +24,7 @@ void main() {
       providers: [
         BlocProvider(create: (_) => CounterBloc()),
         BlocProvider(create: (_) => TodoBloc()),
+        BlocProvider(create: (_) => LoginBloc()),
       ],
       child: const MyApp(),
     ),
@@ -52,7 +55,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(),
       title: 'Flutter Demo',
 
-      home: TodoScreen(),
+      home: LoginScreen(),
     );
   }
 }
