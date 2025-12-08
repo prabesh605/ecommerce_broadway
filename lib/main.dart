@@ -1,5 +1,7 @@
 import 'package:ecommerce_app/blocs/counter_bloc/counter_bloc.dart';
 import 'package:ecommerce_app/blocs/login/login_bloc.dart';
+import 'package:ecommerce_app/blocs/theme/theme_bloc.dart';
+import 'package:ecommerce_app/blocs/theme/theme_state.dart';
 import 'package:ecommerce_app/blocs/todo/todo_bloc.dart';
 import 'package:ecommerce_app/blocs/weather/weather_bloc.dart';
 import 'package:ecommerce_app/controller/weather_controller.dart';
@@ -7,6 +9,7 @@ import 'package:ecommerce_app/controller/weather_controller.dart';
 // import 'package:ecommerce_app/providers/weather_provider.dart';
 import 'package:ecommerce_app/services/weather_service.dart';
 import 'package:ecommerce_app/views/counter_screen.dart';
+import 'package:ecommerce_app/views/home_screen.dart';
 import 'package:ecommerce_app/views/login_screen.dart';
 import 'package:ecommerce_app/views/todo_screen.dart';
 import 'package:ecommerce_app/views/weather_screen.dart';
@@ -28,6 +31,7 @@ void main() {
         BlocProvider(create: (_) => TodoBloc()),
         BlocProvider(create: (_) => LoginBloc()),
         BlocProvider(create: (_) => WeatherBloc(WeatherService())),
+        BlocProvider(create: (_) => ThemeBloc()),
       ],
       child: const MyApp(),
     ),
@@ -51,14 +55,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final themeProvider = Provider.of<ThemeProvider>(context);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // themeMode: themeProvider.themeMode,
-      darkTheme: ThemeData.dark(),
-      theme: ThemeData.light(),
-      title: 'Flutter Demo',
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, state) {
+        if (state is DarkTheme) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            themeMode: ThemeMode.light,
+            darkTheme: ThemeData.dark(),
+            theme: ThemeData.light(),
+            title: 'Flutter Demo',
 
-      home: WeatherScreen(),
+            home: HomeScreen(),
+          );
+        } else {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            themeMode: ThemeMode.light,
+            darkTheme: ThemeData.dark(),
+            theme: ThemeData.light(),
+            title: 'Flutter Demo',
+
+            home: HomeScreen(),
+          );
+        }
+      },
     );
   }
 }

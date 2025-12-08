@@ -1,7 +1,7 @@
 import 'package:ecommerce_app/blocs/weather/weather_bloc.dart';
 import 'package:ecommerce_app/blocs/weather/weather_event.dart';
 import 'package:ecommerce_app/blocs/weather/weather_state.dart';
-import 'package:ecommerce_app/providers/weather_provider.dart';
+// import 'package:ecommerce_app/providers/weather_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
