@@ -1,5 +1,9 @@
+import 'package:ecommerce_app/blocs/weather/weather_bloc.dart';
+import 'package:ecommerce_app/blocs/weather/weather_event.dart';
+import 'package:ecommerce_app/blocs/weather/weather_state.dart';
 import 'package:ecommerce_app/providers/weather_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class WeatherScreen extends StatefulWidget {
@@ -20,7 +24,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<WeatherProvider>(context);
+    // final provider = Provider.of<WeatherProvider>(context);
     return Scaffold(
       appBar: AppBar(title: Text("Weather Screen")),
       body: Column(
@@ -36,21 +40,37 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   ),
                 ),
               ),
-              provider.isLoading?CircularProgressIndicator():
+              // provider.isLoading?CircularProgressIndicator():
               OutlinedButton(
                 onPressed: () async {
                   if (searchController.text.isNotEmpty) {
-                    await provider.loadWeather(searchController.text);
-                    print(provider.temparature);
+                    final cityName = searchController.text;
+
+                    context.read<WeatherBloc>().add(FetchWeather(cityName));
+
+                    // await provider.loadWeather(searchController.text);
+                    // print(provider.temparature);
                   }
                 },
                 child: Text("search"),
               ),
             ],
           ),
-          provider.temparature != null
-              ? Text("Your Temperature is ${provider.temparature}")
-              : Text("Your Temperature is NUll"),
+          BlocBuilder<WeatherBloc, WeatherState>(
+            builder: (context, state) {
+              if (state is WeatherLoading) {
+                return CircularProgressIndicator();
+              } else if (state is WeatherLoaded) {
+                return Text("Temperature is ${state.weather.main.temp}");
+              } else if (state is WeatherError) {
+                return Text(state.message);
+              }
+              return Container();
+            },
+          ),
+          // provider.temparature != null
+          //     ? Text("Your Temperature is ${provider.temparature}")
+          //     : Text("Your Temperature is NUll"),
         ],
       ),
     );
