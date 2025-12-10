@@ -14,6 +14,7 @@ import 'package:ecommerce_app/views/counter_screen.dart';
 import 'package:ecommerce_app/views/home_screen.dart';
 import 'package:ecommerce_app/views/login_screen.dart';
 import 'package:ecommerce_app/views/mobile_screen.dart';
+import 'package:ecommerce_app/views/notes_screen.dart';
 import 'package:ecommerce_app/views/todo_screen.dart';
 import 'package:ecommerce_app/views/weather_screen.dart';
 // import 'package:ecommerce_app/views/home_screen.dart';
@@ -28,6 +29,7 @@ void main() {
   // );
   // WeatherController weatherController = WeatherController(weatherService);
   runApp(
+    // WidgetsFlutterBinding.ensureInitialized();
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => CounterBloc()),
@@ -68,7 +70,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData.light(),
           title: 'Flutter Demo',
 
-          home: MobileScreen(),
+          home: NotesScreen(),
         );
       },
     );
