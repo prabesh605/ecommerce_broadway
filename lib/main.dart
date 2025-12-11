@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/blocs/counter_bloc/counter_bloc.dart';
 import 'package:ecommerce_app/blocs/login/login_bloc.dart';
 import 'package:ecommerce_app/blocs/mobile/mobile_bloc.dart';
+import 'package:ecommerce_app/blocs/notes/notes_bloc.dart';
 import 'package:ecommerce_app/blocs/theme/theme_bloc.dart';
 import 'package:ecommerce_app/blocs/theme/theme_state.dart';
 import 'package:ecommerce_app/blocs/todo/todo_bloc.dart';
@@ -37,6 +38,7 @@ void main() {
         BlocProvider(create: (_) => LoginBloc()),
         BlocProvider(create: (_) => WeatherBloc(WeatherService())),
         BlocProvider(create: (_) => ThemeBloc()),
+        BlocProvider(create: (_) => NotesBloc()),
         BlocProvider(create: (_) => MobileBloc(MobileService())),
       ],
       child: const MyApp(),

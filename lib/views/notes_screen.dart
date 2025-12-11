@@ -1,7 +1,12 @@
+import 'package:ecommerce_app/blocs/notes/notes_bloc.dart';
+import 'package:ecommerce_app/blocs/notes/notes_event.dart';
+import 'package:ecommerce_app/blocs/notes/notes_state.dart';
 import 'package:ecommerce_app/database/db.dart';
 import 'package:ecommerce_app/models/note_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 class NotesScreen extends StatefulWidget {
   const NotesScreen({super.key});
@@ -13,7 +18,13 @@ class NotesScreen extends StatefulWidget {
 class _NotesScreenState extends State<NotesScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
-  List<Map<String, dynamic>> notes = [];
+  // List<NoteModel> notes = [];
+  @override
+  void initState() {
+    context.read<NotesBloc>().add(GetNote());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,36 +54,68 @@ class _NotesScreenState extends State<NotesScreen> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                // final notes = NoteModel(
-                //   title: titleController.text,
-                //   body: bodyController.text,
-                // );
-                final Map<String, dynamic> notes = {
-                  'title': titleController.text,
-                  'body': bodyController.text,
-                };
-                await DBHelper.instance.insert(notes);
+                final notes = NoteModel(
+                  title: titleController.text,
+                  body: bodyController.text,
+                );
+                context.read<NotesBloc>().add(AddNote(notes));
+
+                // await DBHelper.instance.insert(notes);
               },
               child: Text("ADD"),
             ),
 
-            ElevatedButton(
-              onPressed: () async {
-                final data = await DBHelper.instance.getAll();
-                notes = data;
-                print(data);
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     final data = await DBHelper.instance.getAll();
+            //     setState(() {
+            //       notes = data;
+            //     });
+
+            //     print(data);
+            //   },
+            //   child: Text("GetData"),
+            // ),
+            BlocBuilder<NotesBloc, NotesState>(
+              builder: (context, state) {
+                if (state is NoteLoading) {
+                  return CircularProgressIndicator();
+                }
+                if (state is NoteError) {
+                  return Text(state.message);
+                }
+                // if (state is UpdateNoteSucess) {
+                //   return SizedBox(
+                //     height: 200,
+                //     child: ListView.builder(
+                //       itemCount: state.length,
+                //       itemBuilder: (context, index) {
+                //         final data = notes[index];
+                //         return ListTile(
+                //           title: Text(data.title),
+                //           subtitle: Text(data.body),
+                //         );
+                //       },
+                //     ),
+                //   );
+                // }
+                if (state is LoadNotes) {
+                  return Expanded(
+                    // height: 200,
+                    child: ListView.builder(
+                      itemCount: state.list.length,
+                      itemBuilder: (context, index) {
+                        final data = state.list[index];
+                        return ListTile(
+                          title: Text(data.title),
+                          subtitle: Text(data.body),
+                        );
+                      },
+                    ),
+                  );
+                }
+                return Container();
               },
-              child: Text("GetData"),
-            ),
-            SizedBox(
-              height: 200,
-              child: ListView.builder(
-                itemCount: notes.length,
-                itemBuilder: (context, index) {
-                  final data = notes[index];
-                  return ListTile(title: data['title'], subtitle: data['body']);
-                },
-              ),
             ),
           ],
         ),
