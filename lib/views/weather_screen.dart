@@ -62,6 +62,22 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 return CircularProgressIndicator();
               } else if (state is WeatherLoaded) {
                 return Text("Temperature is ${state.weather.main.temp}");
+              } else if (state is WeatherOfflineLoaded) {
+                // return Text("Temperature is ${state.weather.first.temp}");
+                final data = state.weather;
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      final weatherdata = data[index];
+                      return ListTile(
+                        leading: Text("${weatherdata.id}"),
+                        title: Text("Temperature is ${weatherdata.temp}"),
+                        subtitle: Text("${weatherdata.city}"),
+                      );
+                    },
+                  ),
+                );
               } else if (state is WeatherError) {
                 return Text(state.message);
               }

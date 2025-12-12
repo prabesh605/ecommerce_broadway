@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/models/weather_offline_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -12,7 +13,7 @@ class DBHelper {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, fileName);
 
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+    return await openDatabase(path, version: 2, onCreate: _createDB);
   }
 
   Future<Database> get database async {
@@ -22,29 +23,44 @@ class DBHelper {
   }
 
   Future _createDB(Database db, int version) async {
-    await db.execute(
-      'CREATE TABLE notes (id INTEGER PRIMARY KEY, title TEXT NOT NULL, body TEXT)',
-    );
+    await db.execute(NoteModel.createTables);
+    await db.execute(WeatherOfflineModel.createTables);
   }
 
   Future<int> insert(NoteModel data) async {
     final db = await instance.database;
-    return db.insert("notes", data.toMap());
+    return db.insert(NoteModel.tableName, data.toMap());
   }
 
   Future<List<NoteModel>> getAll() async {
     final db = await instance.database;
-    final data = await db.query('notes');
+    final data = await db.query(NoteModel.tableName);
     return data.map((e) => NoteModel.fromMap(e)).toList();
   }
 
   Future<int> update(int id, NoteModel data) async {
     final db = await instance.database;
-    return db.update("notes", data.toMap(), where: "id=?", whereArgs: [id]);
+    return db.update(
+      NoteModel.tableName,
+      data.toMap(),
+      where: "id=?",
+      whereArgs: [id],
+    );
   }
 
   Future<int> delete(int id) async {
     final db = await instance.database;
-    return db.delete("notes", where: "id=?", whereArgs: [id]);
+    return db.delete(NoteModel.tableName, where: "id=?", whereArgs: [id]);
+  }
+
+  Future<int> insertWeather(WeatherOfflineModel data) async {
+    final db = await instance.database;
+    return db.insert(WeatherOfflineModel.tableName, data.toMap());
+  }
+
+  Future<List<WeatherOfflineModel>> getWeather() async {
+    final db = await instance.database;
+    final data = await db.query(WeatherOfflineModel.tableName);
+    return data.map((e) => WeatherOfflineModel.fromMap(e)).toList();
   }
 }

@@ -3,6 +3,7 @@ import 'package:ecommerce_app/blocs/notes/notes_event.dart';
 import 'package:ecommerce_app/blocs/notes/notes_state.dart';
 import 'package:ecommerce_app/database/db.dart';
 import 'package:ecommerce_app/models/note_model.dart';
+import 'package:ecommerce_app/views/weather_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -116,6 +117,15 @@ class _NotesScreenState extends State<NotesScreen> {
                 }
                 return Container();
               },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WeatherScreen()),
+                );
+              },
+              child: Text("Weather"),
             ),
           ],
         ),
