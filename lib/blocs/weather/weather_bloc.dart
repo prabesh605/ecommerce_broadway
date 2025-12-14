@@ -1,13 +1,16 @@
 import 'package:ecommerce_app/blocs/weather/weather_event.dart';
 import 'package:ecommerce_app/blocs/weather/weather_state.dart';
 import 'package:ecommerce_app/database/db.dart';
+import 'package:ecommerce_app/database/weather_db_service.dart';
 import 'package:ecommerce_app/models/weather_offline_model.dart';
 import 'package:ecommerce_app/services/weather_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   WeatherService weatherService;
-  WeatherBloc(this.weatherService) : super(WeatherInitial()) {
+  WeatherDbService weatherDbService;
+  WeatherBloc(this.weatherService, this.weatherDbService)
+    : super(WeatherInitial()) {
     on<FetchWeather>((event, emit) async {
       emit(WeatherLoading());
 
@@ -19,9 +22,9 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
           cod: weather.cod,
         );
 
-        final data = await DBHelper.instance.insertWeather(offlineWeather);
+        final data = await weatherDbService.insertWeather(offlineWeather);
         if (data > 0) {
-          final actualData = await DBHelper.instance.getWeather();
+          final actualData = await weatherDbService.getWeather();
           emit(WeatherOfflineLoaded(actualData));
         } else {
           emit(WeatherError("Error saving offline"));
@@ -37,7 +40,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       }
     });
     on<GetOfflineWeather>((event, emit) async {
-      final data = await DBHelper.instance.getWeather();
+      final data = await weatherDbService.getWeather();
       emit(WeatherOfflineLoaded(data));
     });
   }

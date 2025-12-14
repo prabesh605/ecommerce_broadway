@@ -26,41 +26,4 @@ class DBHelper {
     await db.execute(NoteModel.createTables);
     await db.execute(WeatherOfflineModel.createTables);
   }
-
-  Future<int> insert(NoteModel data) async {
-    final db = await instance.database;
-    return db.insert(NoteModel.tableName, data.toMap());
-  }
-
-  Future<List<NoteModel>> getAll() async {
-    final db = await instance.database;
-    final data = await db.query(NoteModel.tableName);
-    return data.map((e) => NoteModel.fromMap(e)).toList();
-  }
-
-  Future<int> update(int id, NoteModel data) async {
-    final db = await instance.database;
-    return db.update(
-      NoteModel.tableName,
-      data.toMap(),
-      where: "id=?",
-      whereArgs: [id],
-    );
-  }
-
-  Future<int> delete(int id) async {
-    final db = await instance.database;
-    return db.delete(NoteModel.tableName, where: "id=?", whereArgs: [id]);
-  }
-
-  Future<int> insertWeather(WeatherOfflineModel data) async {
-    final db = await instance.database;
-    return db.insert(WeatherOfflineModel.tableName, data.toMap());
-  }
-
-  Future<List<WeatherOfflineModel>> getWeather() async {
-    final db = await instance.database;
-    final data = await db.query(WeatherOfflineModel.tableName);
-    return data.map((e) => WeatherOfflineModel.fromMap(e)).toList();
-  }
 }

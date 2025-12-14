@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/blocs/counter_bloc/counter_bloc.dart';
+import 'package:ecommerce_app/blocs/fakestore/fakestore_bloc.dart';
 import 'package:ecommerce_app/blocs/login/login_bloc.dart';
 import 'package:ecommerce_app/blocs/mobile/mobile_bloc.dart';
 import 'package:ecommerce_app/blocs/notes/notes_bloc.dart';
@@ -7,11 +8,16 @@ import 'package:ecommerce_app/blocs/theme/theme_state.dart';
 import 'package:ecommerce_app/blocs/todo/todo_bloc.dart';
 import 'package:ecommerce_app/blocs/weather/weather_bloc.dart';
 import 'package:ecommerce_app/controller/weather_controller.dart';
+import 'package:ecommerce_app/database/fakeStore_db_service.dart';
+import 'package:ecommerce_app/database/note_db_service.dart';
+import 'package:ecommerce_app/database/weather_db_service.dart';
+import 'package:ecommerce_app/services/fakestore_service.dart';
 import 'package:ecommerce_app/services/mobile_service.dart';
 // import 'package:ecommerce_app/providers/counter_provider.dart';
 // import 'package:ecommerce_app/providers/weather_provider.dart';
 import 'package:ecommerce_app/services/weather_service.dart';
 import 'package:ecommerce_app/views/counter_screen.dart';
+import 'package:ecommerce_app/views/fakestore_screen.dart';
 import 'package:ecommerce_app/views/home_screen.dart';
 import 'package:ecommerce_app/views/login_screen.dart';
 import 'package:ecommerce_app/views/mobile_screen.dart';
@@ -36,10 +42,16 @@ void main() {
         BlocProvider(create: (_) => CounterBloc()),
         BlocProvider(create: (_) => TodoBloc()),
         BlocProvider(create: (_) => LoginBloc()),
-        BlocProvider(create: (_) => WeatherBloc(WeatherService())),
+        BlocProvider(
+          create: (_) => WeatherBloc(WeatherService(), WeatherDbService()),
+        ),
         BlocProvider(create: (_) => ThemeBloc()),
-        BlocProvider(create: (_) => NotesBloc()),
+        BlocProvider(create: (_) => NotesBloc(NoteDbService())),
         BlocProvider(create: (_) => MobileBloc(MobileService())),
+        BlocProvider(
+          create: (_) =>
+              FakeStoreBloc(FakestoreService(), FakestoreDbService()),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -72,7 +84,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData.light(),
           title: 'Flutter Demo',
 
-          home: NotesScreen(),
+          home: FakestoreScreen(),
         );
       },
     );
