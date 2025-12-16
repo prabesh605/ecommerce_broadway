@@ -3,7 +3,6 @@ import 'package:ecommerce_app/blocs/fakestore/fakestore_event.dart';
 import 'package:ecommerce_app/blocs/fakestore/fakestore_state.dart';
 import 'package:ecommerce_app/models/fake_store_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FakestoreScreen extends StatefulWidget {

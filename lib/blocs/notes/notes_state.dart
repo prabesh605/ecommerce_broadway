@@ -17,4 +17,9 @@ class LoadNotes extends NotesState {
   LoadNotes(this.list);
 }
 
+class StreamNotes extends NotesState {
+  final Stream<List<NoteModel>>? list;
+  StreamNotes(this.list);
+}
+
 class UpdateNoteSucess extends NotesState {}

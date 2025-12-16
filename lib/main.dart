@@ -11,12 +11,14 @@ import 'package:ecommerce_app/controller/weather_controller.dart';
 import 'package:ecommerce_app/database/fakeStore_db_service.dart';
 import 'package:ecommerce_app/database/note_db_service.dart';
 import 'package:ecommerce_app/database/weather_db_service.dart';
+import 'package:ecommerce_app/firebase/firestore_service.dart';
 import 'package:ecommerce_app/services/fakestore_service.dart';
 import 'package:ecommerce_app/services/mobile_service.dart';
 // import 'package:ecommerce_app/providers/counter_provider.dart';
 // import 'package:ecommerce_app/providers/weather_provider.dart';
 import 'package:ecommerce_app/services/weather_service.dart';
 import 'package:ecommerce_app/views/counter_screen.dart';
+import 'package:ecommerce_app/views/event_screen.dart';
 import 'package:ecommerce_app/views/fakestore_screen.dart';
 import 'package:ecommerce_app/views/home_screen.dart';
 import 'package:ecommerce_app/views/login_screen.dart';
@@ -24,17 +26,21 @@ import 'package:ecommerce_app/views/mobile_screen.dart';
 import 'package:ecommerce_app/views/notes_screen.dart';
 import 'package:ecommerce_app/views/todo_screen.dart';
 import 'package:ecommerce_app/views/weather_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 // import 'package:ecommerce_app/views/home_screen.dart';
 // import 'package:ecommerce_app/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
   // WeatherService weatherService = WeatherService(
   //   "0b10461d5a30e6612ce19d84c97ef651#",
   // );
   // WeatherController weatherController = WeatherController(weatherService);
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     // WidgetsFlutterBinding.ensureInitialized();
     MultiBlocProvider(
@@ -46,7 +52,9 @@ void main() {
           create: (_) => WeatherBloc(WeatherService(), WeatherDbService()),
         ),
         BlocProvider(create: (_) => ThemeBloc()),
-        BlocProvider(create: (_) => NotesBloc(NoteDbService())),
+        // BlocProvider(
+        //   create: (_) => NotesBloc(NoteDbService(), FirestoreService()),
+        // ),
         BlocProvider(create: (_) => MobileBloc(MobileService())),
         BlocProvider(
           create: (_) =>
@@ -84,7 +92,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData.light(),
           title: 'Flutter Demo',
 
-          home: FakestoreScreen(),
+          home: EventScreen(),
         );
       },
     );
