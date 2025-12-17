@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/blocs/counter_bloc/counter_bloc.dart';
+import 'package:ecommerce_app/blocs/event/event_bloc.dart';
 import 'package:ecommerce_app/blocs/fakestore/fakestore_bloc.dart';
 import 'package:ecommerce_app/blocs/login/login_bloc.dart';
 import 'package:ecommerce_app/blocs/mobile/mobile_bloc.dart';
@@ -60,6 +61,7 @@ Future<void> main() async {
           create: (_) =>
               FakeStoreBloc(FakestoreService(), FakestoreDbService()),
         ),
+        BlocProvider(create: (_) => EventBloc(FirestoreService())),
       ],
       child: const MyApp(),
     ),

@@ -1,3 +1,6 @@
+import 'package:ecommerce_app/blocs/event/event_bloc.dart';
+import 'package:ecommerce_app/blocs/event/event_event.dart';
+import 'package:ecommerce_app/blocs/event/event_state.dart';
 import 'package:ecommerce_app/blocs/notes/notes_bloc.dart';
 import 'package:ecommerce_app/blocs/notes/notes_event.dart';
 import 'package:ecommerce_app/blocs/notes/notes_state.dart';
@@ -25,6 +28,7 @@ class _EventScreenState extends State<EventScreen> {
   @override
   void initState() {
     // context.read<NotesBloc>().add(GetNote());
+    context.read<EventBloc>().add(GetStream());
     super.initState();
   }
 
@@ -62,53 +66,38 @@ class _EventScreenState extends State<EventScreen> {
                   body: bodyController.text,
                   id: '${DateTime.now().millisecondsSinceEpoch}',
                 );
-                service.addEvent(event);
+                context.read<EventBloc>().add(AddEvent(event));
+                titleController.clear();
+                bodyController.clear();
+                // service.addEvent(event);
                 // context.read<NotesBloc>().add(AddNote(notes));
               },
               child: Text("ADD"),
             ),
-            ElevatedButton(
-              onPressed: () {
-                service.getData();
-              },
-              child: Text("Get Data"),
-            ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     // service.getData();
+            //     context.read<EventBloc>().add(GetEvent());
+            //   },
+            //   child: Text("Get Data"),
+            // ),
 
-            // BlocBuilder<NotesBloc, NotesState>(
+            // Text("Simple Get"),
+            // BlocBuilder<EventBloc, EventState>(
             //   builder: (context, state) {
-            //     if (state is NoteLoading) {
-            //       return CircularProgressIndicator();
+            //     if (state is EventLoading) {
+            //       return Center(child: CircularProgressIndicator());
             //     }
-            //     if (state is NoteError) {
-            //       return Text(state.message);
+            //     if (state is EventError) {
+            //       return Center(child: Text(state.message));
             //     }
-
-            //     if (state is StreamNotes) {
-            //       return StreamBuilder(
-            //         stream: state.list,
-            //         builder: (context, snapShot) {
-            //           final data = snapShot.data!;
-            //           return Expanded(
-            //             child: ListView.builder(
-            //               itemCount: data.length,
-            //               itemBuilder: (context, index) {
-            //                 final datas = data[index];
-            //                 return ListTile(
-            //                   title: Text(datas.title),
-            //                   subtitle: Text(datas.body),
-            //                 );
-            //               },
-            //             ),
-            //           );
-            //         },
-            //       );
-            //     }
-            //     if (state is LoadNotes) {
+            //     if (state is LoadEvents) {
+            //       final List<EventModel> eventList = state.list;
             //       return Expanded(
             //         child: ListView.builder(
-            //           itemCount: state.list.length,
+            //           itemCount: eventList.length,
             //           itemBuilder: (context, index) {
-            //             final data = state.list[index];
+            //             final EventModel data = eventList[index];
             //             return ListTile(
             //               title: Text(data.title),
             //               subtitle: Text(data.body),
@@ -122,16 +111,72 @@ class _EventScreenState extends State<EventScreen> {
             // ),
             // ElevatedButton(
             //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => WeatherScreen()),
-            //     );
+            //     // service.getData();
+            //     context.read<EventBloc>().add(GetStream());
             //   },
-            //   child: Text("Weather"),
+            //   child: Text("Get Stream"),
             // ),
+            Text("Stream Get"),
+            BlocBuilder<EventBloc, EventState>(
+              builder: (context, state) {
+                if (state is EventLoading) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (state is EventError) {
+                  return Center(child: Text(state.message));
+                }
+                if (state is StreamEvents) {
+                  return StreamBuilder(
+                    stream: state.list,
+                    builder: (context, snapshot) {
+                      final data = snapshot.data;
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: data?.length,
+                          itemBuilder: (context, index) {
+                            final event = data?[index];
+                            return ListTile(
+                              title: Text(event?.title ?? ""),
+                              subtitle: Text(event?.body ?? ""),
+                              trailing: IconButton(
+                                onPressed: () {
+                                  context.read<EventBloc>().add(
+                                    DeleteEvent(event?.id ?? ""),
+                                  );
+                                },
+                                icon: Icon(Icons.delete, color: Colors.red),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                }
+                return Container();
+              },
+            ),
           ],
         ),
       ),
     );
   }
 }
+// return StreamBuilder(
+//                     stream: state.list,
+//                     builder: (context, snapShot) {
+//                       final data = snapShot.data!;
+//                       return Expanded(
+//                         child: ListView.builder(
+//                           itemCount: data.length,
+//                           itemBuilder: (context, index) {
+//                             final datas = data[index];
+//                             return ListTile(
+//                               title: Text(datas.title),
+//                               subtitle: Text(datas.body),
+//                             );
+//                           },
+//                         ),
+//                       );
+//                     },
+//                   );

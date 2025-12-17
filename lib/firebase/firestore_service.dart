@@ -17,54 +17,35 @@ class FirestoreService {
   Future<List<EventModel>> getData() async {
     final data = await userCollection.get();
     final List<EventModel> events = data.docs.map((doc) {
-      return EventModel.fromMap(doc.data() as Map<String, dynamic>);
+      return EventModel.fromMap(doc.data() as Map<String, dynamic>, id: doc.id);
     }).toList();
     return events;
   }
 
-  //   Stream<List<NoteModel>>? getNotess() {
-  //     try {
-  //       return userCollection.snapshots().map((snapshot) {
-  //         return snapshot.docs.map((doc) {
-  //           return NoteModel.fromMap(doc.data() as Map<String, dynamic>);
-  //         }).toList();
-  //       });
-  //     } catch (e) {
-  //       e.toString();
-  //     }
+  Stream<List<EventModel>> getStream() {
+    final data = userCollection.snapshots();
+    try {
+      return data.map((snapshot) {
+        return snapshot.docs.map((doc) {
+          print("Document ID: ${doc.id}");
+          print("Document Data: ${doc.data()}");
+          return EventModel.fromMap(
+            doc.data() as Map<String, dynamic>,
+            id: doc.id,
+          );
+        }).toList();
+      });
+    } catch (e) {
+      print(e.toString());
+      throw e.toString();
+    }
+  }
 
-  //     return null;
-  //   }
-  // }
+  Future<void> updateEvent(EventModel event) async {
+    await userCollection.doc(event.id).update(event.toMap());
+  }
+
+  Future<void> deleteEvent(String id) async {
+    await userCollection.doc(id).delete();
+  }
 }
-
-// class FirestoreService {
-//   final CollectionReference userCollection = FirebaseFirestore.instance
-//       .collection("event");
-
-//   Future<void> addUser(NoteModel notes) async {
-//     try {
-//       await userCollection.add(notes.toMap());
-//     } catch (e) {
-//       print(e.toString());
-//     }
-//   }
-
-//   // Future<List<NoteModel>> getData() {
-//   //   return userCollection.get();
-//   // }
-
-//   Stream<List<NoteModel>>? getNotess() {
-//     try {
-//       return userCollection.snapshots().map((snapshot) {
-//         return snapshot.docs.map((doc) {
-//           return NoteModel.fromMap(doc.data() as Map<String, dynamic>);
-//         }).toList();
-//       });
-//     } catch (e) {
-//       e.toString();
-//     }
-
-//     return null;
-//   }
-// }

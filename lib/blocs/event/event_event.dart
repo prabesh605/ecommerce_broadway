@@ -11,6 +11,8 @@ class AddEvent extends EventEvent {
 //get
 class GetEvent extends EventEvent {}
 
+class GetStream extends EventEvent {}
+
 //update
 class UpdateEvent extends EventEvent {
   final EventModel eventModel;
@@ -19,6 +21,6 @@ class UpdateEvent extends EventEvent {
 
 //delete
 class DeleteEvent extends EventEvent {
-  final int eventID;
+  final String eventID;
   DeleteEvent(this.eventID);
 }
