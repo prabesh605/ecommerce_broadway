@@ -19,7 +19,7 @@ import 'package:ecommerce_app/services/mobile_service.dart';
 // import 'package:ecommerce_app/providers/weather_provider.dart';
 import 'package:ecommerce_app/services/weather_service.dart';
 import 'package:ecommerce_app/views/counter_screen.dart';
-import 'package:ecommerce_app/views/event_screen.dart';
+import 'package:ecommerce_app/views/product_screen.dart';
 import 'package:ecommerce_app/views/fakestore_screen.dart';
 import 'package:ecommerce_app/views/home_screen.dart';
 import 'package:ecommerce_app/views/login_screen.dart';

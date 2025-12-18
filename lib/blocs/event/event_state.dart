@@ -13,12 +13,12 @@ class EventError extends EventState {
 }
 
 class LoadEvents extends EventState {
-  final List<EventModel> list;
+  final List<ProductModel> list;
   LoadEvents(this.list);
 }
 
 class StreamEvents extends EventState {
-  final Stream<List<EventModel>>? list;
+  final Stream<List<ProductModel>>? list;
   StreamEvents(this.list);
 }
 

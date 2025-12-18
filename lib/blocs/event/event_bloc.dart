@@ -13,12 +13,12 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     });
     on<GetEvent>((event, emit) async {
       emit(EventLoading());
-      final List<EventModel> data = await firebaseService.getData();
+      final List<ProductModel> data = await firebaseService.getData();
       emit(LoadEvents(data));
     });
     on<GetStream>((event, emit) async {
       emit(EventLoading());
-      final Stream<List<EventModel>> data = firebaseService.getStream();
+      final Stream<List<ProductModel>> data = firebaseService.getStream();
       emit(StreamEvents(data));
     });
     on<DeleteEvent>((event, emit) async {

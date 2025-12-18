@@ -8,6 +8,7 @@ import 'package:ecommerce_app/database/db.dart';
 import 'package:ecommerce_app/firebase/firestore_service.dart';
 import 'package:ecommerce_app/models/event_model.dart';
 import 'package:ecommerce_app/models/note_model.dart';
+import 'package:ecommerce_app/views/dashboard_screen.dart';
 import 'package:ecommerce_app/views/weather_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,8 @@ class _EventScreenState extends State<EventScreen> {
   TextEditingController bodyController = TextEditingController();
   TextEditingController editTitleController = TextEditingController();
   TextEditingController editBodyController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
   FirestoreService service = FirestoreService();
   // List<NoteModel> notes = [];
   @override
@@ -43,7 +46,7 @@ class _EventScreenState extends State<EventScreen> {
     super.dispose();
   }
 
-  void showBottomSheet(String id) {
+  void showBottomSheet(String id, double price, String image) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -77,7 +80,13 @@ class _EventScreenState extends State<EventScreen> {
                 onPressed: () {
                   final title = editTitleController.text;
                   final body = editBodyController.text;
-                  final event = EventModel(id: id, title: title, body: body);
+                  final event = ProductModel(
+                    id: id,
+                    title: title,
+                    body: body,
+                    price: price,
+                    image: image,
+                  );
                   context.read<EventBloc>().add(UpdateEvent(event));
                   Navigator.pop(context);
                 },
@@ -94,7 +103,7 @@ class _EventScreenState extends State<EventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Event")),
+      appBar: AppBar(title: Text("Product")),
 
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -118,11 +127,29 @@ class _EventScreenState extends State<EventScreen> {
               ),
             ),
             SizedBox(height: 20),
+            TextFormField(
+              controller: priceController,
+              decoration: InputDecoration(
+                label: Text("Price"),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: imageController,
+              decoration: InputDecoration(
+                label: Text("Image"),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                final event = EventModel(
+                final event = ProductModel(
                   title: titleController.text,
                   body: bodyController.text,
+                  price: double.parse(priceController.text),
+                  image: imageController.text,
                   id: '${DateTime.now().millisecondsSinceEpoch}',
                 );
                 context.read<EventBloc>().add(AddEvent(event));
@@ -199,7 +226,11 @@ class _EventScreenState extends State<EventScreen> {
                                 onPressed: () {
                                   editTitleController.text = event?.title ?? "";
                                   editBodyController.text = event?.body ?? "";
-                                  showBottomSheet(event?.id ?? "");
+                                  showBottomSheet(
+                                    event?.id ?? "",
+                                    event?.price ?? 0,
+                                    event?.image ?? "",
+                                  );
                                 },
                                 icon: Icon(Icons.edit),
                               ),
@@ -226,6 +257,15 @@ class _EventScreenState extends State<EventScreen> {
                 }
                 return Container();
               },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DashboardScreen()),
+                );
+              },
+              child: Text("Dashboard"),
             ),
           ],
         ),

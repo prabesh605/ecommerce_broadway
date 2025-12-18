@@ -4,7 +4,7 @@ abstract class EventEvent {}
 
 //add
 class AddEvent extends EventEvent {
-  final EventModel eventModel;
+  final ProductModel eventModel;
   AddEvent(this.eventModel);
 }
 
@@ -15,7 +15,7 @@ class GetStream extends EventEvent {}
 
 //update
 class UpdateEvent extends EventEvent {
-  final EventModel eventModel;
+  final ProductModel eventModel;
   UpdateEvent(this.eventModel);
 }
 

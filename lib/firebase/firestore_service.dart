@@ -4,9 +4,9 @@ import 'package:ecommerce_app/models/event_model.dart';
 
 class FirestoreService {
   final CollectionReference userCollection = FirebaseFirestore.instance
-      .collection("event");
+      .collection("product");
 
-  Future<void> addEvent(EventModel event) async {
+  Future<void> addEvent(ProductModel event) async {
     try {
       await userCollection.add(event.toMap());
     } catch (e) {
@@ -14,22 +14,25 @@ class FirestoreService {
     }
   }
 
-  Future<List<EventModel>> getData() async {
+  Future<List<ProductModel>> getData() async {
     final data = await userCollection.get();
-    final List<EventModel> events = data.docs.map((doc) {
-      return EventModel.fromMap(doc.data() as Map<String, dynamic>, id: doc.id);
+    final List<ProductModel> events = data.docs.map((doc) {
+      return ProductModel.fromMap(
+        doc.data() as Map<String, dynamic>,
+        id: doc.id,
+      );
     }).toList();
     return events;
   }
 
-  Stream<List<EventModel>> getStream() {
+  Stream<List<ProductModel>> getStream() {
     final data = userCollection.snapshots();
     try {
       return data.map((snapshot) {
         return snapshot.docs.map((doc) {
           print("Document ID: ${doc.id}");
           print("Document Data: ${doc.data()}");
-          return EventModel.fromMap(
+          return ProductModel.fromMap(
             doc.data() as Map<String, dynamic>,
             id: doc.id,
           );
@@ -41,7 +44,7 @@ class FirestoreService {
     }
   }
 
-  Future<void> updateEvent(EventModel event) async {
+  Future<void> updateEvent(ProductModel event) async {
     await userCollection.doc(event.id).update(event.toMap());
   }
 
