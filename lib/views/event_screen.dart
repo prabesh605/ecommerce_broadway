@@ -11,7 +11,7 @@ import 'package:ecommerce_app/models/note_model.dart';
 import 'package:ecommerce_app/views/weather_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 class EventScreen extends StatefulWidget {
   const EventScreen({super.key});
@@ -23,6 +23,8 @@ class EventScreen extends StatefulWidget {
 class _EventScreenState extends State<EventScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
+  TextEditingController editTitleController = TextEditingController();
+  TextEditingController editBodyController = TextEditingController();
   FirestoreService service = FirestoreService();
   // List<NoteModel> notes = [];
   @override
@@ -30,6 +32,63 @@ class _EventScreenState extends State<EventScreen> {
     // context.read<NotesBloc>().add(GetNote());
     context.read<EventBloc>().add(GetStream());
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    bodyController.dispose();
+    editTitleController.dispose();
+    editBodyController.dispose();
+    super.dispose();
+  }
+
+  void showBottomSheet(String id) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Edit the Event",
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: editTitleController,
+                decoration: InputDecoration(
+                  label: Text("Title"),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: editBodyController,
+                decoration: InputDecoration(
+                  label: Text("Body"),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  final title = editTitleController.text;
+                  final body = editBodyController.text;
+                  final event = EventModel(id: id, title: title, body: body);
+                  context.read<EventBloc>().add(UpdateEvent(event));
+                  Navigator.pop(context);
+                },
+                child: Text("Edit", style: TextStyle(fontSize: 20)),
+              ),
+              SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -136,15 +195,27 @@ class _EventScreenState extends State<EventScreen> {
                           itemBuilder: (context, index) {
                             final event = data?[index];
                             return ListTile(
+                              leading: IconButton(
+                                onPressed: () {
+                                  editTitleController.text = event?.title ?? "";
+                                  editBodyController.text = event?.body ?? "";
+                                  showBottomSheet(event?.id ?? "");
+                                },
+                                icon: Icon(Icons.edit),
+                              ),
                               title: Text(event?.title ?? ""),
                               subtitle: Text(event?.body ?? ""),
-                              trailing: IconButton(
-                                onPressed: () {
-                                  context.read<EventBloc>().add(
-                                    DeleteEvent(event?.id ?? ""),
-                                  );
-                                },
-                                icon: Icon(Icons.delete, color: Colors.red),
+                              trailing: Column(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      context.read<EventBloc>().add(
+                                        DeleteEvent(event?.id ?? ""),
+                                      );
+                                    },
+                                    icon: Icon(Icons.delete, color: Colors.red),
+                                  ),
+                                ],
                               ),
                             );
                           },
