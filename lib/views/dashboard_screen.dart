@@ -38,11 +38,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     builder: (context, snapshot) {
                       final data = snapshot.data;
                       return Expanded(
-                        child: ListView.builder(
+                        child: GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                              ),
                           itemCount: data?.length,
-                          itemBuilder: (context, index) {
+                          itemBuilder: (BuildContext context, int index) {
                             final product = data?[index];
                             return Container(
+                              // height: 400,
                               decoration: BoxDecoration(
                                 border: Border.all(),
                                 borderRadius: BorderRadius.circular(12),
@@ -51,7 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 children: [
                                   Image.network(
                                     product?.image ?? "",
-                                    height: 200,
+                                    height: 160,
                                   ),
                                   Text(product?.title ?? ""),
                                   Text("${product?.price}"),
@@ -61,6 +66,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           },
                         ),
                       );
+                      // return Expanded(
+                      //   child: ListView.builder(
+                      //     itemCount: data?.length,
+                      //     itemBuilder: (context, index) {
+                      //       final product = data?[index];
+                      //       return Container(
+                      //         decoration: BoxDecoration(
+                      //           border: Border.all(),
+                      //           borderRadius: BorderRadius.circular(12),
+                      //         ),
+                      //         child: Column(
+                      //           children: [
+                      //             Image.network(
+                      //               product?.image ?? "",
+                      //               height: 200,
+                      //             ),
+                      //             Text(product?.title ?? ""),
+                      //             Text("${product?.price}"),
+                      //           ],
+                      //         ),
+                      //       );
+                      //     },
+                      //   ),
+                      // );
                     },
                   );
                 }
